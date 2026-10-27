@@ -9,6 +9,7 @@
     "ios": {
       "supportsTablet": true
     },
+    "experiments": { "baseUrl": "/iwamad-mobile" },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
