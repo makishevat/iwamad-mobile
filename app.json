@@ -9,7 +9,9 @@
     "ios": {
       "supportsTablet": true
     },
-    "experiments": { "baseUrl": "/iwamad-mobile" },
+    "experiments": {
+      "baseUrl": "/iwamad-mobile"
+    },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -23,7 +25,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-router"
     ]
   }
 }
