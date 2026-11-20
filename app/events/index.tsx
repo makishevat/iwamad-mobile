@@ -11,17 +11,13 @@ import {
 } from "react-native";
 import { EventRow } from "../../src/components/EventRow";
 import { useEvents } from "../../src/hooks/useEvents";
+import { useSavedIds } from "../../src/hooks/useSavedIds";
+
 
 export default function EventsScreen() {
   const { data, isPending, isError, error, refetch, isRefetching } = useEvents();
-  const [savedIds, setSavedIds] = useState<number[]>([]);
   const [query, setQuery] = useState("");
-
-  function toggleSaved(id: number) {
-    setSavedIds((ids) =>
-      ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]
-    );
-  }
+  const { savedIds, toggleSaved } = useSavedIds();
 
   if (isPending) {
     return (
