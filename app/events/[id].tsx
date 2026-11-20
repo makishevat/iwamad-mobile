@@ -1,10 +1,33 @@
 import { Stack, useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-import { events } from "../../src/data/events";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { useEvents } from "../../src/hooks/useEvents";
 
 export default function EventScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const event = events.find((e) => e.id === Number(id));
+  const { data, isPending, isError, error, refetch } = useEvents();
+
+  if (isPending) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator />
+        <Text>Loading events</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Could not load events</Text>
+        <Text>{error.message}</Text>
+        <Pressable onPress={() => refetch()} style={styles.button}>
+          <Text>Try again</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
+  const event = data.find((e) => e.id === Number(id));
 
   if (!event) {
     return (
@@ -35,5 +58,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 8,
+  },
+  button: {
+    minHeight: 44,
+    padding: 12,
   },
 });
