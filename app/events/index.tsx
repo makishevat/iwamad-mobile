@@ -11,17 +11,13 @@ import {
 } from "react-native";
 import { EventRow } from "../../src/components/EventRow";
 import { useEvents } from "../../src/hooks/useEvents";
+import { useSavedIds } from "../../src/hooks/useSavedIds";
+
 
 export default function EventsScreen() {
   const { data, isPending, isError, error, refetch, isRefetching } = useEvents();
-  const [savedIds, setSavedIds] = useState<number[]>([]);
   const [query, setQuery] = useState("");
-
-  function toggleSaved(id: number) {
-    setSavedIds((ids) =>
-      ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]
-    );
-  }
+  const { savedIds, toggleSaved } = useSavedIds();
 
   if (isPending) {
     return (
@@ -57,7 +53,7 @@ export default function EventsScreen() {
         style={styles.input}
       />
       <Text style={styles.hint}>
-        Long-press an event to save it. Saved: {savedIds.length}
+        Swipe or long-press an event to save it. Saved: {savedIds.length}
       </Text>
       <FlatList
         data={visible}
@@ -69,7 +65,7 @@ export default function EventsScreen() {
             event={item}
             saved={savedIds.includes(item.id)}
             onPress={() => router.push(`/events/${item.id}`)}
-            onLongPress={() => toggleSaved(item.id)}
+            onToggleSaved={() => toggleSaved(item.id)}
           />
         )}
         ListEmptyComponent={<Text>No events match</Text>}
